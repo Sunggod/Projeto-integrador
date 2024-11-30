@@ -11,5 +11,5 @@ export abstract class BaseEntry {
         this.updatedAt = updatedAt;
     }
 
-    abstract validate(): boolean;
+    abstract validate?(): boolean;
 }

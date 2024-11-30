@@ -1,34 +1,86 @@
-import {  IsBoolean, IsNotEmpty, IsNumber, isNumber, IsOptional, IsString } from "class-validator";
-
-export class ProductDto{
-    @IsNotEmpty({
-        message:'O campo name não pode ser estar vazio!'
-    })
-    @IsString({
-        message:'O campo name precisa ser uma string!'
-    })
-    name!:string 
-
-    @IsNotEmpty({
-        message:'O campo price não pode ser estar vazio!'
-    })
-    @IsNumber({},{
-        message:'O campo price tem que ser um numero!'
-    })
-    price!:number
-
-    @IsNotEmpty({
-        message:'O campo mark não pode estar vazio!'
-    })
-    @IsString({
-        message:'O campo mark precisa ser uma string!'
-    })
-    mark!:string
-
-    @IsOptional()
-    @IsBoolean({
-        message:'O campo promotion precisa ser do tipo boolean!'
-    })
-    promotion!:boolean
-    
-}
+import { Banner } from "../../Promotion/interfaces";
+import { Promotion, PromotionType } from "../../Promotion/model";
+import {
+    IsNotEmptyString,
+    IsStringValidation,
+    IsNotEmptyNumber,
+    IsNumberValidation,
+    IsNotEmptyDate,
+    IsDateValidation,
+    IsOptionalString,
+    IsOptionalNumber,
+    IsOptionalBoolean,
+    IsOptionalArray,
+    IsOptionalDate,
+    IsBooleanValidation,
+    MinDiscountPercentage,
+    MaxDiscountPercentage,
+    MinPrice,
+    MaxPrice,
+  } from "../constants/CreateProductDtoDecorators";  // O caminho do arquivo onde você criou as constantes
+  
+  export class CreateProductDto {
+    @IsNotEmptyString
+    @IsStringValidation
+    name!: string;
+  
+    @IsNotEmptyNumber
+    @IsNumberValidation
+    @MinPrice
+    @MaxPrice
+    price!: number;
+  
+    @IsNotEmptyNumber
+    @IsNumberValidation
+    stock!: number;
+  
+    @IsNotEmptyString
+    @IsStringValidation
+    mark!: string;
+  
+    @IsNotEmptyString
+    @IsStringValidation
+    storeId!: string;
+  
+    @IsNotEmptyDate
+    @IsDateValidation
+    expiryDate!: Date;
+  
+    @IsNotEmptyString
+    @IsStringValidation
+    urlImage!: string;
+  
+    @IsOptionalNumber
+    @IsNumberValidation
+    factoryValue?: number;
+  
+    @IsOptionalBoolean
+    @IsBooleanValidation
+    promotion?: boolean;
+  
+    @IsOptionalString
+    @IsStringValidation
+    promotionTitle?: string;
+  
+    @IsOptionalString
+    @IsStringValidation
+    promotionDescription?: string;
+  
+    @IsOptionalArray
+    promotionBanners?: Banner[];
+  
+    @IsOptionalString
+    @IsStringValidation
+    promotionType?: PromotionType;
+  
+    @IsOptionalNumber
+    @MinDiscountPercentage
+    @MaxDiscountPercentage
+    discountPercentage?: number;
+  
+    @IsOptionalString
+    @IsStringValidation
+    @IsNotEmptyString
+    promotionActive?: Promotion;
+  }
+  
