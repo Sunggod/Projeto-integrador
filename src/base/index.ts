@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'; // Você pode usar o UUID para gerar IDs únicos
+import { v4 as uuidv4 } from 'uuid'; 
 
 export abstract class BaseEntry {
     id: string;
