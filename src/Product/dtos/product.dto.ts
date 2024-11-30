@@ -17,7 +17,7 @@ import {
     MaxDiscountPercentage,
     MinPrice,
     MaxPrice,
-  } from "../constants/CreateProductDtoDecorators";  // O caminho do arquivo onde você criou as constantes
+  } from "../constants/CreateProductDtoDecorators"; 
   
   export class CreateProductDto {
     @IsNotEmptyString
