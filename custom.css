@@ -1,0 +1,13 @@
+body {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+h1 {
+    color: #ff2600; /* Cor personalizada para títulos */
+}
+
+p {
+    font-family: 'Arial', sans-serif;
+}
+    

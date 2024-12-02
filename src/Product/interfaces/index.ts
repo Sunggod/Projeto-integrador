@@ -1,9 +1,11 @@
-import { CreateProductDto } from "../dtos/product.dto";
+import { Store } from "../../Store/model";
+import { User } from "../../User/model";
+import { CreateProductDto } from "../dtos/create-product-dto";
 import { Product } from "../model/product";
 
 export  interface IProductService {
-    create(productDto: CreateProductDto): void;
-    update(id: string, updatedProduct: Partial<Product>): void;
+    create(productDto: CreateProductDto, storeId:Store["id"],userId:User["id"]): void;
+    update(id: string ,storeId:Store["id"],userId:User["id"], updatedProduct: Partial<Product>): void;
     findById(id: string): Product | null;
-    delete(id: string): void;
+    delete(id: string,storeId:Store["id"],userId:User["id"]): void;
 }
