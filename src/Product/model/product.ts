@@ -4,7 +4,7 @@ import { validateSync } from 'class-validator';
 
 type status = 'ativo' | 'desativado';
 
-export class Product extends BaseEntry {  // Certifique-se de que Product estende BaseEntry
+export class Product extends BaseEntry { 
     name: string;
     price:number;
     stock:number;
