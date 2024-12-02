@@ -31,5 +31,5 @@ export class Store extends BaseEntry{
     validate?(): boolean {
         return Boolean (this.name && this.adress && this.owner)
     }
-
+    
 }

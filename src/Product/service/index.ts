@@ -12,7 +12,7 @@ export  class ProductService implements IProductService {
     private async init():Promise <void>{
          this.fileRepo = await FileRepository.getInstance()
     }
-    private verifyOwnership(storeId: Store["id"], userId: User["id"]): void {
+    public  verifyOwnership(storeId: Store["id"], userId: User["id"]): void {
         const store = this.fileRepo.getStores().find((store) => store.id === storeId);
         if (!store) {
             throw new Error(`Loja com o id '${storeId}' não encontrada!`);

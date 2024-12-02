@@ -3,9 +3,11 @@ import { IEmployeesService } from '../interface';
 import { EmployeesData } from '../types';
 import { Employees } from './../model/index';
 import { EmployeeDto } from './../dto/index';
+import { ProductService } from '../../Product/service';
 
 export class EmployeesService implements IEmployeesService{
     private fileRepo!: FileRepository;
+    private verifyOwner1!: ProductService
     constructor(){}
     private async init():Promise <void>{
          this.fileRepo = await FileRepository.getInstance()
@@ -26,6 +28,7 @@ export class EmployeesService implements IEmployeesService{
        }
     }  
     async updateEmployee(Employe: Employees, storeId: string, bossId: string, updateEmployee: Partial<Employees>): Promise<Employees> {
+        this.verifyOwner1.verifyOwnership(storeId,bossId)
         const index = this.fileRepo.getEmployess().findIndex(e => e.id === Employe.id)
         if(index !== -1){
             this.fileRepo.getEmployess()[index] = {...this.fileRepo.getEmployess()[index]
@@ -38,6 +41,7 @@ export class EmployeesService implements IEmployeesService{
         return this.fileRepo.getEmployess()[index]
     }
     async createEmployee(employeeDto: EmployeeDto, storeId: string, bossId: string): Promise<Employees> {
+        this.verifyOwner1.verifyOwnership(storeId,bossId)
             const employer :EmployeesData = {
                 name: employeeDto.name!,
                 email: employeeDto.email,
@@ -58,7 +62,8 @@ export class EmployeesService implements IEmployeesService{
     }
 
 
-    async deleteEmployee(id: Employees['id']): Promise<void> {
+    async deleteEmployee(id: Employees['id'], storeId:string, bossId:string): Promise<void> {
+        this.verifyOwner1.verifyOwnership(storeId,bossId)
         const index = this.fileRepo.getEmployess().findIndex(e => e.id === id);
         if(index !== -1){
             this.fileRepo.getEmployess().splice(index, 1);
