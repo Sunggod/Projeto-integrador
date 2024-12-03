@@ -9,7 +9,7 @@ import { DataStore } from "../types/dataStore";
 export class StoreService implements IStoreService{
     private fileRepo!: FileRepository;
     constructor(){}
-    private async init():Promise <void>{
+    public async init():Promise <void>{
          this.fileRepo = await FileRepository.getInstance()
     }
     async createStore(storeDTO: StoreDTO, ownerId: User["id"]): Promise<Store>{
