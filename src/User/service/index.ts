@@ -30,22 +30,27 @@ export class UserService implements IUserService{
 
 
 
-    async updateUser(userId: User["id"], updatedData: Partial<User>): Promise<void> {
+    async updateUser(userId: string, updatedData: Partial<User>): Promise<User> {
         const users = await this.filerespo.getUsers();
         const userIndex = users.findIndex(user => user.id === userId);
+    
         if (userIndex === -1) {
             throw new Error("User not found");
         }
     
+        // Atualiza os dados do usuário
         users[userIndex] = {
             ...users[userIndex], 
-            ...updatedData
-        };  
+            ...updatedData,
+            updatedAt: new Date()
+        };
     
-        await this.filerespo.addUser(users[userIndex]);
-        await this.filerespo.saveChanges();  
-
-}
+        await this.filerespo.saveChanges();
+    
+        console.log(`Usuário com ID ${userId} atualizado com sucesso!`);
+        return users[userIndex];  
+    }
+    
     async deleteUser(id: User["id"]): Promise<void> {
         const users = this.filerespo.getUsers();
         const userIndex = users.findIndex(user => user.id === id);

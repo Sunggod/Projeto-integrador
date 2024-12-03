@@ -1,5 +1,6 @@
 import { BaseEntry } from "../../base";
 import { Employees } from "../../Employees/model";
+import { Order } from "../../Orders/models";
 import { User } from "../../User/model";
 import { Adress } from "../interface/adress.interface";
 import { DataStore } from "../types/dataStore";
@@ -11,6 +12,7 @@ export class Store extends BaseEntry{
     owner!:User["id"]
     openingHours!:Date
     closingTime!:Date  
+    order!:Order[]
     imageBannerUrl?:string
     imageLogoUrl?:string                                                                             
     employees?:Employees[]

@@ -45,6 +45,6 @@ Detalhes: Foi preciso usar o init em vez de um constructor para inicializar o Fi
 
 - Implementação de um banco de dados
 
-- Implementação de um servidor NestJs
+- Implementação de um servidor NestJS
 
 - Implementação de controllers para gerenciamento de endpoints

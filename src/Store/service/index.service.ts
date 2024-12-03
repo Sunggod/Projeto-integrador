@@ -1,4 +1,5 @@
 import { FileRepository } from "../../database/FileRepository";
+import { Order } from "../../Orders/models";
 import { User } from "../../User/model";
 import { StoreDTO } from "../dto";
 import { IStoreService } from "../interface/index.interface";
@@ -25,7 +26,8 @@ export class StoreService implements IStoreService{
             imageBannerUrl: storeDTO.imageBannerUrl,
             imageLogoUrl: storeDTO.imageLogoUrl,
             employees: storeDTO.employees,
-            products: storeDTO.products
+            products: storeDTO.products,
+            orders:storeDTO.orders
         }
 
         const newStore = new Store(store)

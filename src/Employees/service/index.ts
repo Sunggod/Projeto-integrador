@@ -24,7 +24,7 @@ export class EmployeesService implements IEmployeesService{
         return this.fileRepo.getEmployess()[index]
        }
        else{
-           throw new Error("funcionario(a) não encontrado!")
+           throw new Error("Funcionario(a) não encontrado!")
        }
     }  
     async updateEmployee(Employe: Employees, storeId: string, bossId: string, updateEmployee: Partial<Employees>): Promise<Employees> {
@@ -35,7 +35,7 @@ export class EmployeesService implements IEmployeesService{
                 , ...updateEmployee}
             this.fileRepo.saveChanges()
         }else{
-            throw new Error("funcionario(a) não encontrado!")
+            throw new Error("Funcionario(a) não encontrado!")
         }
         console.log(`Informações do funcionario ${Employe.name} atualizadas com sucesso!`)
         return this.fileRepo.getEmployess()[index]

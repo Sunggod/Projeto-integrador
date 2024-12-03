@@ -4,6 +4,7 @@ import { Product } from '../Product/model/product'
 import { Promotion } from '../Promotion/model'
 import { Employees } from '../Employees/model'
 import { promises as fs } from 'fs';
+import { Order } from '../Orders/models'
 
 export class FileRepository {
     private static instance: FileRepository;
@@ -15,7 +16,8 @@ export class FileRepository {
         products: Product[];
         promotions: Promotion[];
         employees: Employees[];
-    } = { users: [], stores: [], products: [], promotions: [], employees: [] };
+        orders: Order[];
+    } = { users: [], stores: [], products: [], promotions: [], employees: [], orders: []};
 
     private constructor() {}
 
@@ -63,6 +65,16 @@ export class FileRepository {
             throw new Error(`Erro ao salvar o arquivo: ${error.message}`);
         }
     }
+
+    public getOrder(): Order[]{
+        return this.data.orders
+    }
+
+    public async addOrder(orders: Order): Promise<void>{
+        this.data.orders.push(orders);
+        await this.saveDataToFile();
+    }
+
 
     public getUsers(): User[] {
         return this.data.users;

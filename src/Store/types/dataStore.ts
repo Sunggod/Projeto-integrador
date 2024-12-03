@@ -2,6 +2,7 @@ import { Employees } from "../../Employees/model"
 import { Product } from "../../Product/model/product"
 import { User } from "../../User/model"
 import { Adress } from "../interface/adress.interface"
+import { Order } from "../../Orders/models"
 
 export type DataStore = {
     name:string
@@ -10,7 +11,8 @@ export type DataStore = {
     openingHours:Date
     closingTime:Date  
     imageBannerUrl?:string
-    imageLogoUrl?:string                                                                              
+    imageLogoUrl?:string    
+    orders?:Order[]                                                                          
     employees?:Employees[]
     products?:Product[]
     id?: string
