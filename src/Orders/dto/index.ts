@@ -4,12 +4,13 @@ import { OrderStatus } from "../enums/order-status-enum";
 import { IsArray, IsDate, IsEnum, isNotEmpty, IsNotEmpty, IsNumber, IsOptional, ValidateNested } from "class-validator";
 import { User } from "../../User/model";
 import { ErrorMessages } from "../constant";
+import { UserCommum } from "../../CommonUser/models";
 
 
 export class OrderDto{
     @IsNotEmpty()
     @ValidateNested({ each: true})
-    user!: User["id"];
+    userId!: UserCommum["id"];
     @IsArray({
         message: ErrorMessages.ORDER_PRODUCTS
     })

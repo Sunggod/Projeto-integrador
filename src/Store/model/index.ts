@@ -1,4 +1,5 @@
 import { BaseEntry } from "../../base";
+import { UserCommum } from "../../CommonUser/models";
 import { Employees } from "../../Employees/model";
 import { Order } from "../../Orders/models";
 import { User } from "../../User/model";
@@ -17,6 +18,8 @@ export class Store extends BaseEntry{
     imageLogoUrl?:string                                                                             
     employees?:Employees[]
     products?:Product[] = []
+    userCommum?:UserCommum[] = []
+
     constructor(data: DataStore )
     {
         super(data.id, data.createdAt)
@@ -29,6 +32,7 @@ export class Store extends BaseEntry{
         this.imageLogoUrl = data.imageLogoUrl
         this.employees = data.employees
         this.products = data.products
+        this.userCommum = data.userCommum
     }
     validate?(): boolean {
         return Boolean (this.name && this.adress && this.owner)

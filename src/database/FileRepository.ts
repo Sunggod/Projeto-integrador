@@ -5,6 +5,7 @@ import { Promotion } from '../Promotion/model'
 import { Employees } from '../Employees/model'
 import { promises as fs } from 'fs';
 import { Order } from '../Orders/models'
+import { UserCommum } from '../CommonUser/models'
 
 export class FileRepository {
     private static instance: FileRepository;
@@ -17,7 +18,8 @@ export class FileRepository {
         promotions: Promotion[];
         employees: Employees[];
         orders: Order[];
-    } = { users: [], stores: [], products: [], promotions: [], employees: [], orders: []};
+        usersCommumn:UserCommum[]
+    } = { users: [], stores: [], products: [], promotions: [], employees: [], orders: [], usersCommumn:[]};
 
     private constructor() {}
 
@@ -65,7 +67,16 @@ export class FileRepository {
             throw new Error(`Erro ao salvar o arquivo: ${error.message}`);
         }
     }
-
+    public getUsersComumm(storeId:string): UserCommum[] {//+
+        return this.data.usersCommumn.filter(user => user.storeId === storeId);
+    }
+    public getUsersComummById(id: string, storeId:string): UserCommum | undefined {
+        return this.data.usersCommumn.find(user => user.id === id && user.storeId === storeId)
+    };
+    public async addUserComumm(user: UserCommum): Promise<void>{
+        this.data.usersCommumn.push(user);
+        await this.saveDataToFile();
+    }
     public getOrder(): Order[]{
         return this.data.orders
     }

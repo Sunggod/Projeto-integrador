@@ -5,7 +5,7 @@ import { User } from "../../User/model";
 import { CartStatus } from "../enums/order-status-enum";
 
 export type baseCart ={
-    products: Product[];
+    products?: Product[];
     totalPrice: number;
     userCart: User["id"];
     storeId: Store["id"]

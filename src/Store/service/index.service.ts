@@ -1,3 +1,4 @@
+import { UserCommum } from "../../CommonUser/models";
 import { FileRepository } from "../../database/FileRepository";
 import { Order } from "../../Orders/models";
 import { User } from "../../User/model";
@@ -27,7 +28,8 @@ export class StoreService implements IStoreService{
             imageLogoUrl: storeDTO.imageLogoUrl,
             employees: storeDTO.employees,
             products: storeDTO.products,
-            orders:storeDTO.orders
+            orders:storeDTO.orders,
+            userCommum:storeDTO.userCommum
         }
 
         const newStore = new Store(store)

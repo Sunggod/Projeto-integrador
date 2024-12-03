@@ -1,15 +1,15 @@
 import { BaseEntry } from "../../base";
 import { Product } from "../../Product/model/product";
-import { User } from "../../User/model";
 import { Order } from "../../Orders/models";
 import { CartStatus } from "../enums/order-status-enum";
 import { Store } from "../../Store/model";
 import { baseCart } from "../types";
+import { UserCommum } from "../../CommonUser/models";
 
 export class Cart extends BaseEntry {
-    products: Product[];
+    products?: Product[];
     totalPrice: number;
-    userCart: User["id"];
+    userCart: UserCommum["id"];
     storeId: Store["id"]
     status: CartStatus; 
     order?: Order; 

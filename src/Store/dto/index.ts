@@ -6,6 +6,7 @@ import { ErrorMessages } from '../constants/error-message';
 import { Adress } from './../interface/adress.interface';
 import { AdressClass } from './model/adress-class-suport';
 import { Order } from '../../Orders/models';
+import { UserCommum } from '../../CommonUser/models';
 
 export class StoreDTO {
     @IsString({ message: ErrorMessages.STORE_NAME_STRING })
@@ -48,6 +49,11 @@ export class StoreDTO {
     @ValidateNested({ each: true, message: ErrorMessages.STORE_PRODUCTS_VALID_OBJECT })
     @Type(() => Product)
     products?: Product[];
+    @IsOptional()
+    @IsArray({ message: ErrorMessages.STORE_USER_COMMUM_ARRAY })
+    @ValidateNested({ each: true, message: ErrorMessages.STORE_USER_COMMUM_VALID_OBJECT})
+    @Type(() => UserCommum)
+    userCommum?: UserCommum[];
     @IsOptional()
     @IsArray({ message: ErrorMessages.STORE_PRODUCTS_ARRAY })
     @ValidateNested({ each: true, message: ErrorMessages.STORE_PRODUCTS_VALID_OBJECT })

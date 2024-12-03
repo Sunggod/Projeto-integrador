@@ -38,7 +38,6 @@ export class UserService implements IUserService{
             throw new Error("User not found");
         }
     
-        // Atualiza os dados do usuário
         users[userIndex] = {
             ...users[userIndex], 
             ...updatedData,

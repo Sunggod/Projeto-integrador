@@ -19,4 +19,7 @@ export const ErrorMessages = {
 
     STORE_PRODUCTS_ARRAY: 'Os produtos devem ser um array.',
     STORE_PRODUCTS_VALID_OBJECT: 'Cada entrada de produto deve ser um objeto válido.',
+    STORE_USER_COMMUM_ARRAY:'Os usuarios da loja precisa ser uma array',
+    STORE_USER_COMMUM_VALID_OBJECT: 'Cada entrada de users deve ser um objeto válido.',
+
 };

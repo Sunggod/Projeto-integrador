@@ -1,10 +1,11 @@
+import { UserCommum } from './../../CommonUser/models/index';
 import { BaseEntry } from "../../base";
 import { Product } from "../../Product/model/product";
 import { Store } from "../../Store/model";
 import { User } from "../../User/model";
 import { OrderStatus } from "../enums/order-status-enum";
 export interface dataOrders{
-    user: User["id"];
+    userId: UserCommum["id"];
     products: Product[];
     totalPrice: number;
     startDate?:Date;
@@ -17,7 +18,7 @@ export interface dataOrders{
     updatedAt?:Date
 }
 export class Order extends BaseEntry {
-    user: User["id"];
+    userId: UserCommum["id"];
     products: Product[];
     storeId: Store["id"]
     totalPrice: number;
@@ -28,7 +29,7 @@ export class Order extends BaseEntry {
 
     constructor(data:dataOrders) {
         super(data.id, data.createdAt, data.updatedAt);
-        this.user = data.user;
+        this.userId = data.userId;
         this.products = data.products;
         this.storeId = data.storeId
         this.totalPrice = data.totalPrice;

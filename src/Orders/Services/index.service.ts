@@ -16,7 +16,7 @@ export class OrderService implements IserviceOrders{
        if(!store) throw new Error("Produto não encontrado!");
        
        const order:dataOrders = {
-            user: Ordersdto.user,
+            userId: Ordersdto.userId,
             products: Ordersdto.products,
             storeId: storeId,
             totalPrice: Ordersdto.totalPrice,
