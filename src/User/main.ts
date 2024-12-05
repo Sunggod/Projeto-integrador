@@ -2,6 +2,7 @@ import { UserService } from "./service";
 import { UserDto } from './dto';
 import { User } from "./model";
 import promptSync from "prompt-sync";
+import { hash } from "crypto";
 
 const prompt = promptSync();
 
@@ -12,7 +13,7 @@ async function main() {
     const name = prompt("Digite seu nome: ");
     const age = parseInt(prompt("Digite sua idade: "));
     const email = prompt("Digite seu email: ");
-    const password = prompt("Digite sua senha: ");
+    const password = prompt("Digite sua senha: ", { echo: '*' });
 
     const userDto: UserDto = {
         name: name,

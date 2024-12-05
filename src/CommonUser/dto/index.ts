@@ -42,7 +42,7 @@ export class UserCommumDto{
     age?: number
 
     @IsOptional()
-    cart!: Cart
+    cart?: Cart
 
     @IsOptional()
     adress?:Adress

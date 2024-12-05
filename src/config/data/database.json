@@ -1,0 +1,221 @@
+{
+  "users": [
+    {
+      "id": "dd56c8f0-c578-40aa-a200-d59619b84961",
+      "createdAt": "2024-12-05T17:59:42.596Z",
+      "updatedAt": "2024-12-05T17:59:42.596Z",
+      "name": "Vinicius",
+      "age": 2,
+      "email": "teste@hotmail.com"
+    }
+  ],
+  "stores": [
+    {
+      "id": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+      "createdAt": "2024-12-05T18:00:26.947Z",
+      "updatedAt": "2024-12-05T18:00:26.947Z",
+      "products": [
+        {
+          "id": "c7e0e4e0-159d-490d-922a-40bce04d86db",
+          "createdAt": "2024-12-05T19:06:35.899Z",
+          "updatedAt": "2024-12-05T19:06:35.899Z",
+          "name": "teste",
+          "price": 30,
+          "stock": 25,
+          "mark": "teste",
+          "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+          "status": "ativo",
+          "expiryDate": "2025-02-05T00:00:00.000Z",
+          "urlImage": "",
+          "factoryValue": 25,
+          "promotion": false
+        }
+      ],
+      "userCommum": [
+        {
+          "id": "973ed1af-b4dc-4f5c-9954-3bd3b392eceb",
+          "createdAt": "2024-12-05T18:20:52.210Z",
+          "updatedAt": "2024-12-05T18:20:52.210Z",
+          "name": "Vinicius",
+          "email": "viniciusscheck@hotmail.com",
+          "password": "teste",
+          "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+          "age": 18,
+          "adress": {
+            "street": "",
+            "city": "",
+            "state": "",
+            "zip": ""
+          },
+          "pictureImage": "",
+          "cart": []
+        },
+        {
+          "id": "6836e95b-34b5-45b2-9d3d-e570e6f90f5f",
+          "createdAt": "2024-12-05T19:37:41.211Z",
+          "updatedAt": "2024-12-05T19:37:41.211Z",
+          "name": "Eliezer",
+          "email": "Elizer@hotmail.com",
+          "password": "senacrs",
+          "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+          "age": 18,
+          "adress": {
+            "street": "",
+            "city": "",
+            "state": "",
+            "zip": ""
+          },
+          "pictureImage": "",
+          "cart": []
+        }
+      ],
+      "name": "PrismStore",
+      "adress": [
+        {
+          "street": "teste",
+          "city": "teste",
+          "state": "teste",
+          "postalCode": "3521512521",
+          "zip": "25215251"
+        }
+      ],
+      "owner": "dd56c8f0-c578-40aa-a200-d59619b84961",
+      "openingHours": "1970-01-01T11:00:00.000Z",
+      "closingTime": "1970-01-01T21:00:00.000Z",
+      "employees": []
+    }
+  ],
+  "products": [
+    {
+      "id": "7da4e71b-e5e6-4fc0-afcf-d69403c50635",
+      "createdAt": "2024-12-05T18:59:58.248Z",
+      "updatedAt": "2024-12-05T18:59:58.248Z",
+      "name": "Cheetos",
+      "price": 20,
+      "stock": 50,
+      "mark": "Cheetos",
+      "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+      "status": "ativo",
+      "expiryDate": "2025-03-02T03:00:00.000Z",
+      "urlImage": "",
+      "factoryValue": 20,
+      "promotion": false
+    },
+    {
+      "id": "c7e0e4e0-159d-490d-922a-40bce04d86db",
+      "createdAt": "2024-12-05T19:06:35.899Z",
+      "updatedAt": "2024-12-05T19:06:35.899Z",
+      "name": "teste",
+      "price": 30,
+      "stock": 25,
+      "mark": "teste",
+      "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+      "status": "ativo",
+      "expiryDate": "2025-02-05T00:00:00.000Z",
+      "urlImage": "",
+      "factoryValue": 25,
+      "promotion": false
+    }
+  ],
+  "promotions": [],
+  "employees": [
+    {
+      "id": "586ad128-d2e0-4c58-8517-fa4c25878945",
+      "createdAt": "2024-12-05T18:26:19.810Z",
+      "updatedAt": "2024-12-05T18:26:19.810Z",
+      "name": "teste",
+      "age": 18,
+      "email": "teste",
+      "password": "351251",
+      "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+      "bossId": "dd56c8f0-c578-40aa-a200-d59619b84961",
+      "role": "manager",
+      "imageUrl": "",
+      "cpf": ""
+    },
+    {
+      "id": "c0c74536-7345-494c-9d93-48bbc6cf3844",
+      "createdAt": "2024-12-05T18:32:52.619Z",
+      "updatedAt": "2024-12-05T18:32:52.619Z",
+      "name": "Eliezer",
+      "age": 18,
+      "email": "eliezerduarte@hotmail.com",
+      "password": "senacrs",
+      "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+      "bossId": "dd56c8f0-c578-40aa-a200-d59619b84961",
+      "role": "stockAnalyst",
+      "imageUrl": "",
+      "cpf": ""
+    }
+  ],
+  "orders": [
+    {
+      "id": "5da74597-48c7-4b97-9635-99289fe267a5",
+      "createdAt": "2024-12-05T19:10:55.436Z",
+      "updatedAt": "2024-12-05T19:10:55.436Z",
+      "userId": "973ed1af-b4dc-4f5c-9954-3bd3b392eceb",
+      "products": [],
+      "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+      "totalPrice": 0,
+      "status": "Pendente"
+    }
+  ],
+  "usersCommum": [
+    {
+      "id": "973ed1af-b4dc-4f5c-9954-3bd3b392eceb",
+      "createdAt": "2024-12-05T18:20:52.210Z",
+      "updatedAt": "2024-12-05T18:20:52.210Z",
+      "name": "teste",
+      "email": "teste@hotmail.com",
+      "password": "teste",
+      "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+      "age": 18,
+      "adress": {
+        "street": "",
+        "city": "",
+        "state": "",
+        "zip": ""
+      },
+      "pictureImage": "",
+      "cart": {
+        "id": "b21e3a9b-47cc-4f74-9171-7019cb5bd35f",
+        "createdAt": "2024-12-05T19:08:15.115Z",
+        "updatedAt": "2024-12-05T19:10:55.436Z",
+        "products": [],
+        "totalPrice": 0,
+        "userCart": "973ed1af-b4dc-4f5c-9954-3bd3b392eceb",
+        "status": "Fechado",
+        "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+        "order": {
+          "id": "5da74597-48c7-4b97-9635-99289fe267a5",
+          "createdAt": "2024-12-05T19:10:55.436Z",
+          "updatedAt": "2024-12-05T19:10:55.436Z",
+          "userId": "973ed1af-b4dc-4f5c-9954-3bd3b392eceb",
+          "products": [],
+          "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+          "totalPrice": 0,
+          "status": "Pendente"
+        }
+      }
+    },
+    {
+      "id": "6836e95b-34b5-45b2-9d3d-e570e6f90f5f",
+      "createdAt": "2024-12-05T19:37:41.211Z",
+      "updatedAt": "2024-12-05T19:37:41.211Z",
+      "name": "Eliezer",
+      "email": "Elizer@hotmail.com",
+      "password": "senacrs",
+      "storeId": "3f4b06ea-2aec-4d9b-8f31-d0acddaa6c2a",
+      "age": 18,
+      "adress": {
+        "street": "",
+        "city": "",
+        "state": "",
+        "zip": ""
+      },
+      "pictureImage": "",
+      "cart": []
+    }
+  ],
+  "cart": []
+}

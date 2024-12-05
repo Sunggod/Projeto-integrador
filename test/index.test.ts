@@ -1,6 +1,6 @@
-import { StoreService } from "../service/index.service";
-import { StoreDTO } from "../dto";
-import { User } from "../../User/model";
+import { StoreService } from './../src/Store/service/index.service';
+import { StoreDTO } from './../src/Store/dto/index';
+import { User } from './../src/User/model/index';
 
 // CONFIGURAÇÃO
 describe('Store Service', () => {

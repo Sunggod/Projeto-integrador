@@ -3,11 +3,9 @@ import { IEmployeesService } from '../interface';
 import { EmployeesData } from '../types';
 import { Employees } from './../model/index';
 import { EmployeeDto } from './../dto/index';
-import { ProductService } from '../../Product/service';
 
 export class EmployeesService implements IEmployeesService{
     private fileRepo!: FileRepository;
-    private verifyOwner1!: ProductService
     constructor(){}
     private async init():Promise <void>{
          this.fileRepo = await FileRepository.getInstance()
@@ -28,7 +26,7 @@ export class EmployeesService implements IEmployeesService{
        }
     }  
     async updateEmployee(Employe: Employees, storeId: string, bossId: string, updateEmployee: Partial<Employees>): Promise<Employees> {
-        this.verifyOwner1.verifyOwnership(storeId,bossId)
+        this.fileRepo.verifyOwnership(storeId,bossId)
         const index = this.fileRepo.getEmployess().findIndex(e => e.id === Employe.id)
         if(index !== -1){
             this.fileRepo.getEmployess()[index] = {...this.fileRepo.getEmployess()[index]
@@ -41,7 +39,17 @@ export class EmployeesService implements IEmployeesService{
         return this.fileRepo.getEmployess()[index]
     }
     async createEmployee(employeeDto: EmployeeDto, storeId: string, bossId: string): Promise<Employees> {
-        this.verifyOwner1.verifyOwnership(storeId,bossId)
+        console.log("Verificando ownership...");
+        this.fileRepo.verifyOwnership(storeId, bossId);
+        const stores = this.fileRepo.getStores();
+        console.log('Lojas disponíveis:', stores);
+        console.log('ID fornecido:', storeId);
+        
+        const store = stores.find(store => store.id.trim() === storeId.trim());
+        if (!store) {
+            throw new Error('Loja não encontrada!');
+        }
+
             const employer :EmployeesData = {
                 name: employeeDto.name!,
                 email: employeeDto.email,
@@ -53,17 +61,21 @@ export class EmployeesService implements IEmployeesService{
                 imageUrl:employeeDto.imageUrl!,
                 cpf:employeeDto.cpf!
             }
+            console.log("Instanciando novo funcionário...");
             const newEmployee = new Employees(employer);
-            this.fileRepo.addEmployee(newEmployee);
+            store.employees = store.employees || [];
+            store.employees.push(newEmployee);
+            console.log("Adicionando funcionário ao repositório...");
+            await this.fileRepo.addEmployee(newEmployee);
             this.fileRepo.saveChanges()
-            console.log(`Novo funcionario '${newEmployee.name}' criado com sucesso!\nId do funcionario: ${newEmployee.id}`)
-            return newEmployee
+            console.log("Novo funcionário criado com sucesso:", newEmployee);
+             return newEmployee;
 
     }
 
 
     async deleteEmployee(id: Employees['id'], storeId:string, bossId:string): Promise<void> {
-        this.verifyOwner1.verifyOwnership(storeId,bossId)
+        this.fileRepo.verifyOwnership(storeId,bossId)
         const index = this.fileRepo.getEmployess().findIndex(e => e.id === id);
         if(index !== -1){
             this.fileRepo.getEmployess().splice(index, 1);

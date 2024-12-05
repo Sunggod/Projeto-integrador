@@ -7,6 +7,7 @@ import { promises as fs } from 'fs';
 import { Order } from '../Orders/models'
 import { UserCommum } from '../CommonUser/models'
 import path from 'path'
+import { Cart } from '../Cart/models'
 
 export class FileRepository {
     private static instance: FileRepository;
@@ -19,14 +20,16 @@ export class FileRepository {
         promotions: Promotion[];
         employees: Employees[];
         orders: Order[];
-        usersCommumn:UserCommum[]
-    } = { users: [], stores: [], products: [], promotions: [], employees: [], orders: [], usersCommumn:[]};
+        usersCommum:UserCommum[];
+        cart:Cart[];
+    } = { users: [], stores: [], products: [], promotions: [], employees: [], orders: [], usersCommum:[], cart:[] };
 
-    private constructor() {}
+    public constructor() {}
 
     public async init(): Promise<void> {
         await this.ensureDatabaseFile();
         this.data = await this.loadDataFromFile();
+        console.log("Dados carregados:", this.data);
     }
 
     public static async getInstance(): Promise<FileRepository> {
@@ -38,16 +41,18 @@ export class FileRepository {
     }
     
     private async ensureDatabaseFile(): Promise<void> {
-        const defaultData = { users: [], stores: [], products: [], promotions: [], employees: [] };
-
         try {
             await fs.access(this.filePath);
+            this.data = await this.loadDataFromFile();
         } catch (error: any) {
             if (error.code === 'ENOENT') {
-                console.warn(`Arquivo "${this.filePath}" não encontrado. Criando um novo...`);
-                await fs.writeFile(this.filePath, JSON.stringify(defaultData, null, 2));
+                console.warn(`Archivo "${this.filePath}" not found. Creating a new one...`);
+                const defaultData = { users: [], stores: [], products: [], promotions: [], employees: [], orders: [], usersCommum: [], cart: [] };
+                await fs.mkdir(path.resolve(__dirname, '../config/data'), { recursive: true });               
+                 await fs.writeFile(this.filePath, JSON.stringify(defaultData, null, 2));
+                this.data = defaultData;
             } else {
-                throw new Error(`Erro ao verificar ou criar o arquivo: ${error.message}`);
+                throw new Error(`Error checking or creating the file: ${error.message}`);
             }
         }
     }
@@ -55,6 +60,7 @@ export class FileRepository {
     private async loadDataFromFile(): Promise<any> {
         try {
             const fileContent = await fs.readFile(this.filePath, 'utf-8');
+            console.log("Conteúdo do arquivo JSON:", fileContent);
             return JSON.parse(fileContent);
         } catch (error: any) {
             throw new Error(`Erro ao carregar o arquivo: ${error.message}`);
@@ -63,19 +69,21 @@ export class FileRepository {
 
     private async saveDataToFile(): Promise<void> {
         try {
+            console.log("Salvando os seguintes dados no arquivo JSON:", this.data);
             await fs.writeFile(this.filePath, JSON.stringify(this.data, null, 2));
         } catch (error: any) {
             throw new Error(`Erro ao salvar o arquivo: ${error.message}`);
         }
     }
+    
     public getUsersComumm(storeId:string): UserCommum[] {//+
-        return this.data.usersCommumn.filter(user => user.storeId === storeId);
+        return this.data.usersCommum.filter(user => user.storeId === storeId);
     }
     public getUsersComummById(id: string, storeId:string): UserCommum | undefined {
-        return this.data.usersCommumn.find(user => user.id === id && user.storeId === storeId)
+        return this.data.usersCommum.find(user => user.id === id && user.storeId === storeId)
     };
-    public async addUserComumm(user: UserCommum): Promise<void>{
-        this.data.usersCommumn.push(user);
+    public async addUserComumm(user: UserCommum): Promise<void> {
+        this.data.usersCommum.push(user);
         await this.saveDataToFile();
     }
     public getOrder(): Order[]{
@@ -102,8 +110,10 @@ export class FileRepository {
     }
     public async addEmployee(employee: Employees): Promise<void> {
         this.data.employees.push(employee);
+        console.log("Funcionário adicionado ao array:", this.data.employees);
         await this.saveDataToFile();
     }
+    
     public getStores(): Store[] {
         return this.data.stores;
     }
@@ -128,7 +138,15 @@ export class FileRepository {
     public getPromotions(): Promotion[] {
         return this.data.promotions;
     }
-
+    public  verifyOwnership(storeId: Store["id"], userId: User["id"]): void {
+        const store = this.getStores().find((store) => store.id === storeId);
+        if (!store) {
+            throw new Error(`Loja com o id '${storeId}' não encontrada!`);
+        }
+        if (store.owner !== userId) {
+            throw new Error(`Usuário '${userId}' não é o proprietário da loja '${storeId}'!`);
+        }
+    }
     public async addPromotion(promotion: Promotion): Promise<void> {
         this.data.promotions.push(promotion);
         await this.saveDataToFile();

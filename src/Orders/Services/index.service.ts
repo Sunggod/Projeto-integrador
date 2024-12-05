@@ -11,9 +11,15 @@ export class OrderService implements IserviceOrders{
         this.fileRepo = await FileRepository.getInstance()
    }
    async CreateOrders(Ordersdto: OrderDto, storeId: string): Promise<Order> {
-       const store = this.fileRepo.getStores().find(store => store.id === storeId);
-
-       if(!store) throw new Error("Produto não encontrado!");
+        const stores = this.fileRepo.getStores();
+        console.log('Lojas disponíveis:', stores);
+        console.log('ID fornecido:', storeId);
+        
+        const store = stores.find(store => store.id.trim() === storeId.trim());
+        if (!store) {
+            throw new Error('Loja não encontrada!');
+        }
+    
        
        const order:dataOrders = {
             userId: Ordersdto.userId,
@@ -28,8 +34,9 @@ export class OrderService implements IserviceOrders{
 
        const newOrder = new Order(order)
 
+       store.order = store.order || [];
+       store.order.push(newOrder);
        await this.fileRepo.addOrder(newOrder)
-
        console.log(`Novo pedido "${newOrder.status}" criado com sucesso!`)
        return newOrder
    }

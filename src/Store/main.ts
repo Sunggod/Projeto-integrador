@@ -13,22 +13,19 @@ const prompt = PromptSync();
   const storeService = new StoreService();
 
   try {
-    // Inicializando o serviço (carregar repositório de arquivos)
     await storeService.init();
 
     console.log("Bem-vindo ao sistema de criação de lojas!");
 
-    // Coletando informações do usuário para a nova loja
     const name = prompt("Nome da loja: ");
     const ownerId = prompt("ID do proprietário da loja: ");
 
-    // Coletando os endereços
     const street = prompt("Rua: ");
     const city = prompt("Cidade: ");
     const state = prompt("Estado: ");
     const postalCode = prompt("Código Postal: ");
     const zip = prompt("CEP: ");
-
+    
     const adress = new AdressClass();
     adress.street = street;
     adress.city = city;

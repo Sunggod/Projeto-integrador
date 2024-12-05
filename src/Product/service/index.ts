@@ -12,19 +12,18 @@ export  class ProductService implements IProductService {
     private async init():Promise <void>{
          this.fileRepo = await FileRepository.getInstance()
     }
-    public  verifyOwnership(storeId: Store["id"], userId: User["id"]): void {
-        const store = this.fileRepo.getStores().find((store) => store.id === storeId);
-        if (!store) {
-            throw new Error(`Loja com o id '${storeId}' não encontrada!`);
-        }
-        if (store.owner !== userId) {
-            throw new Error(`Usuário '${userId}' não é o proprietário da loja '${storeId}'!`);
-        }
-    }
 
     async create(productDto: CreateProductDto, storeId: Store["id"], userId: User["id"]): Promise<void> {
-        this.verifyOwnership(storeId, userId);
-
+        this.fileRepo.verifyOwnership(storeId, userId);
+        const stores = this.fileRepo.getStores();
+        console.log('Lojas disponíveis:', stores);
+        console.log('ID fornecido:', storeId);
+        
+        const store = stores.find(store => store.id.trim() === storeId.trim());
+        if (!store) {
+            throw new Error('Loja não encontrada!');
+        }
+        
         const product = new Product(
             productDto.name,
             productDto.price,
@@ -55,7 +54,8 @@ export  class ProductService implements IProductService {
             product.price = product.price - product.price * (promotion.discountPercentage / 100);
             console.log(`Desconto de ${promotion.discountPercentage}% aplicado ao produto ${product.name}`);
         }
-
+        store.products = store.products || [];
+        store.products.push(product);
         await this.fileRepo.addProduct(product);
         console.log(`Produto ${product.name} criado com sucesso!`);
     }
@@ -65,7 +65,7 @@ export  class ProductService implements IProductService {
     }
 
     async delete(id: string, storeId: Store["id"], userId: User["id"]): Promise<void> {
-        this.verifyOwnership(storeId, userId);
+        this.fileRepo.verifyOwnership(storeId, userId);
 
         const productIndex = this.fileRepo.getProducts().findIndex(
             (product) => product.id === id && product.storeId === storeId
@@ -87,7 +87,7 @@ export  class ProductService implements IProductService {
         userId: User["id"],
         updatedProduct: Partial<Product>
     ): Promise<void> {
-        this.verifyOwnership(storeId, userId);
+        this.fileRepo.verifyOwnership(storeId, userId);
 
         const index = this.fileRepo.getProducts().findIndex(
             (product) => product.id === id && product.storeId === storeId
@@ -125,7 +125,7 @@ export  class ProductService implements IProductService {
                 currentProduct.price * (updatedProduct.promotionActive.discountPercentage / 100);
             console.log(
                 `Promoção de ${updatedProduct.promotionActive.discountPercentage}% aplicada ao produto ${currentProduct.name}`
-            );
+            );  
         }
 
         this.fileRepo. getProducts()[index] = { ...currentProduct, ...updatedProduct };

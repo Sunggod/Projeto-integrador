@@ -70,33 +70,48 @@ export class CartService implements ICartService {
 
         return cart;
     }
-
+    async getProductById(storeId: string, productId: string): Promise<Product | undefined> {
+        const store = this.fileRepo.getStores().find(store => store.id === storeId);
+        if (store) {
+            return store.products?.find(product => product.id === productId);
+        }
+        return undefined;
+    }
+    
     async checkoutCart(userId: string, storeId: string): Promise<Cart> {
         const cart = await this.getOrCreateCart(userId, storeId);
         if (cart.status !== CartStatus.OPEN) {
             throw new Error('Carrinho não está aberto');
         }
     
+        // Inicializar o campo order caso ele não exista
+        if (!cart.order) {
+            cart.order = new Order({
+                userId,
+                storeId,
+                products: [],
+                totalPrice: 0,
+                status: OrderStatus.PENDING, // O status já é PENDING por padrão
+            });
+        }
+    
         cart.status = CartStatus.CHECKED_OUT;
         cart.updatedAt = new Date();
-        cart.order!.status = OrderStatus.PENDING
-
-        const products = cart.products ?? []; 
+        
+        // Modificar o status da ordem
+        cart.order.status = OrderStatus.PENDING;
     
-        const order = new Order({
-            userId,
-            storeId,
-            products: products,
-            totalPrice: cart.totalPrice,
-            status: cart.order!.status 
-        })
+        const products = cart.products ?? [];
     
-        cart.order = order;
+        // Atualizar a ordem com os produtos e o preço total
+        cart.order.products = products;
+        cart.order.totalPrice = cart.totalPrice;
     
-        await this.fileRepo.addOrder(order);
-        await this.fileRepo.saveChanges();
+        await this.fileRepo.addOrder(cart.order); // Adiciona a ordem
+        await this.fileRepo.saveChanges(); // Salva todas as alterações no repositório
     
         return cart;
     }
+    
     
 }

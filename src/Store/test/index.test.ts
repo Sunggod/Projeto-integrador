@@ -1,42 +1,47 @@
-import { StoreService } from "../service/index.service";
-import { StoreDTO } from "../dto";
-import { User } from "../../User/model";
+import { StoreService } from './../service/index.service';
+import { StoreDTO } from './../dto/index';
+import { User } from './../../User/model/index';
+import { FileRepository } from "../../database/FileRepository"; // Import FileRepository
 
-// CONFIGURAÇÃO
+// Mocking FileRepository
+jest.mock('../../database/FileRepository');
+
 describe('Store Service', () => {
     let storeService: StoreService;
+    let fileRepoMock: jest.Mocked<FileRepository>;
 
-    // CONFIGURAÇÃO
     beforeEach(() => {
+        // Initialize the StoreService instance
+        fileRepoMock = new FileRepository() as jest.Mocked<FileRepository>;
         storeService = new StoreService();
+        
+        // Mock getUsers to return an array of users
+        fileRepoMock.getUsers.mockReturnValue([
+            {
+                id: '1',
+                age: 21,
+                password: '240151',
+                name: 'John Doe',
+                email: 'john.doe@example.com',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: '2',
+                age: 30,
+                password: 'securePass123',
+                name: 'Jane Smith',
+                email: 'jane.smith@example.com',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            }
+        ]);
 
-        // CONFIGURAÇÃO: Mock de usuários
-        const mockUser: User = {
-            id: '1',
-            age: 21,
-            password: '240151',
-            name: 'John Doe',
-            email: 'john.doe@example.com',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        };
-
-        const anotherMockUser: User = {
-            id: '2',
-            age: 30,
-            password: 'securePass123',
-            name: 'Jane Smith',
-            email: 'jane.smith@example.com',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        };
-
-        // Adicionando usuários ao serviço
-        (storeService as any).users.push(mockUser, anotherMockUser);
+        // Assign the mocked fileRepo to the storeService instance
+        storeService['fileRepo'] = fileRepoMock;
     });
 
     it('Deve criar uma loja com sucesso', async () => {
-        // CONFIGURAÇÃO
         const ownerId = '1';
 
         const newStoreDto: StoreDTO = {
@@ -56,12 +61,13 @@ describe('Store Service', () => {
             imageLogoUrl: 'https://example.com/logo.jpg',
             employees: [],
             products: [],
+            orders: [],
+            userCommum: [],
         };
 
-        // AÇÃO
+        // Simulate the createStore method
         const newStore = await storeService.createStore(newStoreDto, ownerId);
 
-        // VERIFICAÇÃO
         expect(newStore).toBeDefined();
         expect(newStore.name).toBe('PrismPanel');
         expect(newStore.owner).toBe(ownerId);
@@ -76,7 +82,6 @@ describe('Store Service', () => {
     });
 
     it('Deve lançar erro ao tentar criar loja com usuário inexistente', async () => {
-        // CONFIGURAÇÃO
         const invalidOwnerId = '999';
 
         const newStoreDto: StoreDTO = {
@@ -96,17 +101,18 @@ describe('Store Service', () => {
             imageLogoUrl: '',
             employees: [],
             products: [],
+            orders: [],
+            userCommum: [],
         };
 
-        // VERIFICAÇÃO
+        // Expecting the error "Usuário não encontrado!"
         await expect(storeService.createStore(newStoreDto, invalidOwnerId)).rejects.toThrow(
             'Usuário não encontrado!'
         );
     });
 
     it('Deve lançar erro ao tentar criar loja com ownerId que não corresponde ao dono especificado', async () => {
-        // CONFIGURAÇÃO
-        const ownerId = '2'; 
+        const ownerId = '2'; // This should be mismatched with the owner in the DTO
 
         const newStoreDto: StoreDTO = {
             name: 'MismatchedStore',
@@ -118,16 +124,18 @@ describe('Store Service', () => {
                     zip: '07030',
                 },
             ],
-            owner: '1', // O `owner` declarado não corresponde ao `ownerId` passado
+            owner: '1', // The owner declared doesn't match the ownerId passed
             openingHours: new Date('2024-01-01T10:00:00'),
             closingTime: new Date('2024-01-01T20:00:00'),
             imageBannerUrl: 'https://example.com/different-banner.jpg',
             imageLogoUrl: 'https://example.com/different-logo.jpg',
             employees: [],
             products: [],
+            orders: [],
+            userCommum: [],
         };
 
-        // VERIFICAÇÃO
+        // Expecting the error "Usuário não autorizado a criar esta loja!"
         await expect(storeService.createStore(newStoreDto, ownerId)).rejects.toThrow(
             'Usuário não autorizado a criar esta loja!'
         );
