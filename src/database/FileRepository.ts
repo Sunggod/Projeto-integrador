@@ -6,10 +6,11 @@ import { Employees } from '../Employees/model'
 import { promises as fs } from 'fs';
 import { Order } from '../Orders/models'
 import { UserCommum } from '../CommonUser/models'
+import path from 'path'
 
 export class FileRepository {
     private static instance: FileRepository;
-    private filePath: string = './database.json';
+    private filePath: string = path.resolve(__dirname, '../config/data/database.json');
 
     private data: {
         users: User[];
