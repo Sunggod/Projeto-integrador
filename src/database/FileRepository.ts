@@ -7,6 +7,7 @@ import { promises as fs } from 'fs';
 import { Order } from '../Orders/models'
 import { UserCommum } from '../CommonUser/models'
 import path from 'path'
+import { Cart } from '../Cart/models'
 
 export class FileRepository {
     private static instance: FileRepository;
@@ -20,7 +21,8 @@ export class FileRepository {
         employees: Employees[];
         orders: Order[];
         usersCommumn:UserCommum[]
-    } = { users: [], stores: [], products: [], promotions: [], employees: [], orders: [], usersCommumn:[]};
+        cart:Cart[]
+    } = { users: [], stores: [], products: [], promotions: [], employees: [], orders: [], usersCommumn:[], cart:[]};
 
     private constructor() {}
 
