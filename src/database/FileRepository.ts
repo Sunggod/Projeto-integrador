@@ -40,7 +40,7 @@ export class FileRepository {
     }
     
     private async ensureDatabaseFile(): Promise<void> {
-        const defaultData = { users: [], stores: [], products: [], promotions: [], employees: [] };
+        const defaultData = { users: [], stores: [], products: [], promotions: [], employees: [],  orders: [], usersCommumn:[], cart:[]};
     
         // Garantir que a pasta 'data' exista
         try {
