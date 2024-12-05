@@ -41,6 +41,10 @@ Detalhes: Foi preciso usar o init em vez de um constructor para inicializar o Fi
 
 - Modificado FileRepository, agora possui verificação se o arquivo existe, caso não exista a criação é feita automaticamente, a validação ocorre da seguinte forma, se o erro for do tipo "ENOENT" ele vai criar o arquivo, isso porque esse tipo de erro por padrão representa que o arquivo não existe ou não foi encontrado!
 
+### Modificações finais
+
+- Correções e melhorias no codigo!
+
 ## Implementações futuras
 
 - Implementação de um banco de dados
