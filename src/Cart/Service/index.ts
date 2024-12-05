@@ -70,7 +70,14 @@ export class CartService implements ICartService {
 
         return cart;
     }
-
+    async getProductById(storeId: string, productId: string): Promise<Product | undefined> {
+        const store = this.fileRepo.getStores().find(store => store.id === storeId);
+        if (store) {
+            return store.products?.find(product => product.id === productId);
+        }
+        return undefined;
+    }
+    
     async checkoutCart(userId: string, storeId: string): Promise<Cart> {
         const cart = await this.getOrCreateCart(userId, storeId);
         if (cart.status !== CartStatus.OPEN) {

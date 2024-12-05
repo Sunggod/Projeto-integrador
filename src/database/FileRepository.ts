@@ -6,10 +6,11 @@ import { Employees } from '../Employees/model'
 import { promises as fs } from 'fs';
 import { Order } from '../Orders/models'
 import { UserCommum } from '../CommonUser/models'
+import path from 'path'
 
 export class FileRepository {
     private static instance: FileRepository;
-    private filePath: string = './database.json';
+    private filePath: string = path.join(__dirname, 'data', 'database.json');
 
     private data: {
         users: User[];
@@ -38,8 +39,10 @@ export class FileRepository {
     
     private async ensureDatabaseFile(): Promise<void> {
         const defaultData = { users: [], stores: [], products: [], promotions: [], employees: [] };
-
+    
+        // Garantir que a pasta 'data' exista
         try {
+            await fs.mkdir('./data', { recursive: true });
             await fs.access(this.filePath);
         } catch (error: any) {
             if (error.code === 'ENOENT') {
@@ -50,6 +53,7 @@ export class FileRepository {
             }
         }
     }
+    
 
     private async loadDataFromFile(): Promise<any> {
         try {

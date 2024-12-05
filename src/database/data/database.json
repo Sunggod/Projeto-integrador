@@ -33,7 +33,7 @@
     {
       "id": "7d7236f4-5acd-470e-b64b-81f5f7146a3f",
       "createdAt": "2024-12-02T19:42:54.480Z",
-      "updatedAt": "2024-12-02T19:56:50.367Z",
+      "updatedAt": "2024-12-05T05:11:21.348Z",
       "name": "Vinicius",
       "age": 21,
       "email": "viniciusscheck@hotmail.com",
@@ -55,9 +55,40 @@
       "name": "teste",
       "age": 16,
       "email": "teste@gmail.com"
+    },
+    {
+      "id": "a04e48a6-ff38-46b9-b957-57f13c3a9edc",
+      "createdAt": "2024-12-05T05:11:21.344Z",
+      "updatedAt": "2024-12-05T05:11:21.344Z",
+      "name": "Vinicius",
+      "age": 21,
+      "email": "vinicius@gmail.com"
     }
   ],
-  "stores": [],
+  "stores": [
+    {
+      "id": "866b19ed-a610-4473-938a-06c25b554875",
+      "createdAt": "2024-12-05T05:13:58.347Z",
+      "updatedAt": "2024-12-05T05:13:58.347Z",
+      "products": [],
+      "userCommum": [],
+      "name": "PrismPnael",
+      "adress": [
+        {
+          "street": "Avenida Manoel Antonio Peres",
+          "city": "Pelotas",
+          "state": "Rio Grande Do Sul",
+          "zip": "2951859812"
+        }
+      ],
+      "owner": "a04e48a6-ff38-46b9-b957-57f13c3a9edc",
+      "openingHours": "1970-01-01T11:00:00.000Z",
+      "closingTime": "1970-01-01T21:00:00.000Z",
+      "imageBannerUrl": "teste",
+      "imageLogoUrl": "teste",
+      "employees": []
+    }
+  ],
   "products": [],
   "promotions": [],
   "employees": []
