@@ -1,21 +1,23 @@
 import { StoreService } from './../service/index.service';
 import { StoreDTO } from './../dto/index';
 import { User } from './../../User/model/index';
-import { FileRepository } from "../../database/FileRepository"; // Import FileRepository
+import { FileRepository } from "../../database/FileRepository"; // Importação do repositório de arquivos (mockado para testes)
 
-// Mocking FileRepository
+// Mockando a classe FileRepository para simular seu comportamento durante os testes
 jest.mock('../../database/FileRepository');
 
 describe('Store Service', () => {
-    let storeService: StoreService;
-    let fileRepoMock: jest.Mocked<FileRepository>;
+    let storeService: StoreService;  // Instância do serviço StoreService
+    let fileRepoMock: jest.Mocked<FileRepository>;  // Mock do repositório FileRepository
 
     beforeEach(() => {
-        // Initialize the StoreService instance
+        // Inicializa o mock do FileRepository
         fileRepoMock = new FileRepository() as jest.Mocked<FileRepository>;
+
+        // Instância do serviço StoreService
         storeService = new StoreService();
         
-        // Mock getUsers to return an array of users
+        // Configuração do comportamento esperado do mock (simula dados de usuários)
         fileRepoMock.getUsers.mockReturnValue([
             {
                 id: '1',
@@ -37,13 +39,15 @@ describe('Store Service', () => {
             }
         ]);
 
-        // Assign the mocked fileRepo to the storeService instance
+        // Atribuindo o mock do repositório à instância do StoreService
         storeService['fileRepo'] = fileRepoMock;
     });
 
+    // Teste 1: Criação de loja com sucesso
     it('Deve criar uma loja com sucesso', async () => {
-        const ownerId = '1';
+        const ownerId = '1';  // ID do proprietário da loja
 
+        // Dados para a criação de uma nova loja
         const newStoreDto: StoreDTO = {
             name: 'PrismPanel',
             adress: [
@@ -65,13 +69,13 @@ describe('Store Service', () => {
             userCommum: [],
         };
 
-        // Simulate the createStore method
+        // Chamada do método de criação de loja e validação do resultado
         const newStore = await storeService.createStore(newStoreDto, ownerId);
 
-        expect(newStore).toBeDefined();
-        expect(newStore.name).toBe('PrismPanel');
-        expect(newStore.owner).toBe(ownerId);
-        expect(newStore.adress).toEqual([
+        expect(newStore).toBeDefined();  // Verifica se a loja foi criada com sucesso
+        expect(newStore.name).toBe('PrismPanel');  // Verifica o nome da loja
+        expect(newStore.owner).toBe(ownerId);  // Verifica se o proprietário da loja está correto
+        expect(newStore.adress).toEqual([  // Verifica se o endereço da loja está correto
             {
                 street: '123 Main St',
                 city: 'Metropolis',
@@ -81,9 +85,11 @@ describe('Store Service', () => {
         ]);
     });
 
+    // Teste 2: Tentativa de criação de loja com usuário inexistente
     it('Deve lançar erro ao tentar criar loja com usuário inexistente', async () => {
-        const invalidOwnerId = '999';
+        const invalidOwnerId = '999';  // ID do proprietário inválido
 
+        // Dados para a criação de uma nova loja com proprietário inválido
         const newStoreDto: StoreDTO = {
             name: 'InvalidStore',
             adress: [
@@ -105,15 +111,17 @@ describe('Store Service', () => {
             userCommum: [],
         };
 
-        // Expecting the error "Usuário não encontrado!"
+        // Espera-se que lance um erro: "Usuário não encontrado!"
         await expect(storeService.createStore(newStoreDto, invalidOwnerId)).rejects.toThrow(
             'Usuário não encontrado!'
         );
     });
 
+    // Teste 3: Tentativa de criação de loja com proprietário incorreto
     it('Deve lançar erro ao tentar criar loja com ownerId que não corresponde ao dono especificado', async () => {
-        const ownerId = '2'; // This should be mismatched with the owner in the DTO
+        const ownerId = '2';  // ID do proprietário, que não corresponde ao owner declarado no DTO
 
+        // Dados para a criação de uma nova loja com ownerId incorreto
         const newStoreDto: StoreDTO = {
             name: 'MismatchedStore',
             adress: [
@@ -124,7 +132,7 @@ describe('Store Service', () => {
                     zip: '07030',
                 },
             ],
-            owner: '1', // The owner declared doesn't match the ownerId passed
+            owner: '1',  // Owner declarado no DTO, mas diferente do ID fornecido
             openingHours: new Date('2024-01-01T10:00:00'),
             closingTime: new Date('2024-01-01T20:00:00'),
             imageBannerUrl: 'https://example.com/different-banner.jpg',
@@ -135,7 +143,7 @@ describe('Store Service', () => {
             userCommum: [],
         };
 
-        // Expecting the error "Usuário não autorizado a criar esta loja!"
+        // Espera-se que lance um erro: "Usuário não autorizado a criar esta loja!"
         await expect(storeService.createStore(newStoreDto, ownerId)).rejects.toThrow(
             'Usuário não autorizado a criar esta loja!'
         );
