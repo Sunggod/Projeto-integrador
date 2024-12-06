@@ -1,78 +1,133 @@
-// Importação dos módulos necessários
-import { UserService } from "./service"; // Importa o serviço responsável por manipular usuários
-import { UserDto } from './dto'; // Importa o Data Transfer Object (DTO) que define a estrutura de dados do usuário
-import { User } from "./model"; // Importa o modelo de dados do usuário
-import promptSync from "prompt-sync"; // Importa o módulo para capturar entradas do usuário no terminal
-import { hash } from "crypto"; // Importa o módulo para criptografar dados, embora não esteja sendo usado diretamente no código
+import { UserService } from "./service";
+import { UserDto } from './dto';
+import { User } from "./model";
+import promptSync from "prompt-sync"; 
 
-// Cria uma instância de promptSync para capturar entradas do usuário de forma síncrona
 const prompt = promptSync();
 
-// Função principal assíncrona
 async function main() {
-    // Cria uma instância do UserService
     const userService = new UserService();
-    
-    // Chama o método init para inicializar o serviço (pode ser usado para inicializar conexão com banco de dados, por exemplo)
     await userService.init();
 
-    // Solicita que o usuário insira os dados pessoais no terminal
-    const name = prompt("Digite seu nome: ");
-    const age = parseInt(prompt("Digite sua idade: ")); // A idade é convertida para um número inteiro
-    const email = prompt("Digite seu email: ");
-    const password = prompt("Digite sua senha: ", { echo: '*' }); // A senha é oculta ao ser digitada
+    let exit = false;
 
-    // Cria o DTO com as informações fornecidas pelo usuário
+    while (!exit) {
+        console.log("\nMenu de Opções:");
+        console.log("1. Criar novo usuário");
+        console.log("2. Atualizar usuário");
+        console.log("3. Deletar usuário");
+        console.log("4. Ver todos os usuários");
+        console.log("5. Ver usuário por ID");
+        console.log("6. Sair");
+
+        const choice = prompt("Escolha uma opção (1-6): ");
+
+        switch (choice) {
+            case '1':
+                await createUser(userService);
+                break;
+            case '2':
+                await updateUser(userService);
+                break;
+            case '3':
+                await deleteUser(userService);
+                break;
+            case '4':
+                await viewAllUsers(userService);
+                break;
+            case '5':
+                await viewUserById(userService);
+                break;
+            case '6':
+                exit = true;
+                console.log("Saindo...");
+                break;
+            default:
+                console.log("Opção inválida. Tente novamente.");
+        }
+    }
+}
+
+async function createUser(userService: UserService) {
+    const name = prompt("Digite seu nome: ");
+    const age = parseInt(prompt("Digite sua idade: "));
+    const email = prompt("Digite seu email: ");
+    const password = prompt("Digite sua senha: ", { echo: '*' });
+
     const userDto: UserDto = {
         name: name,
         age: age,
         email: email,
-        password: password, // Senha fornecida pelo usuário
-        avatarUrl: 'https://example.com/avatar.jpg', // Um URL fictício para o avatar do usuário
+        password: password,
+        avatarUrl: 'https://example.com/avatar.jpg',
+        stores: [] 
     };
 
     try {
-        // Chama o método createUser do UserService para criar um novo usuário com os dados fornecidos
         const newUser = await userService.createUser(userDto);
-        console.log('Usuário criado com sucesso:', newUser); // Exibe uma mensagem de sucesso no console
+        console.log('Usuário criado com sucesso:', newUser);
     } catch (error: any) {
-        // Caso ocorra algum erro ao criar o usuário, captura e exibe a mensagem de erro
         console.error('Erro ao criar usuário:', error.message);
     }
+}
 
-    // Definindo um novo DTO com dados fictícios para atualizar o usuário
-    const userDtoUpdate: UserDto = {
-        name: 'Vinicius', // Nome alterado
-        age: 21, // Idade alterada
-        email: 'viniciusscheck@hotmail.com', // Email alterado
-        password: '22222151', // Senha alterada
-        avatarUrl: 'https://example.com/avatar.jpg', // URL do avatar mantido
-    };
+async function updateUser(userService: UserService) {
+    const userId = prompt("Digite o ID do usuário a ser atualizado: ");
+    const name = prompt("Novo nome (deixe em branco para manter): ");
+    const age = prompt("Nova idade (deixe em branco para manter): ");
+    const email = prompt("Novo email (deixe em branco para manter): ");
+    const password = prompt("Nova senha (deixe em branco para manter): ", { echo: '*' });
+
+    const updatedData: Partial<User> = {};
+    if (name) updatedData.name = name;
+    if (age) updatedData.age = parseInt(age);
+    if (email) updatedData.email = email;
+    if (password) updatedData.password = password;
 
     try {
-        // Definindo o ID do usuário que será atualizado (ID fictício)
-        const userId = "7d7236f4-5acd-470e-b64b-81f5f7146a3f"; 
-        
-        // Criando o objeto `updatedData` com as informações para atualização
-        const updatedData: Partial<User> = {
-            name: userDtoUpdate.name,
-            age: userDtoUpdate.age,
-            email: userDtoUpdate.email,
-            password: userDtoUpdate.password,
-            avatarUrl: userDtoUpdate.avatarUrl,
-        };
-    
-        // Chama o método updateUser do UserService para atualizar os dados do usuário
         const updatedUser = await userService.updateUser(userId, updatedData);
-        console.log('Usuário atualizado com sucesso:', updatedUser); // Exibe uma mensagem de sucesso no console
+        console.log('Usuário atualizado com sucesso:', updatedUser);
     } catch (error: any) {
-        // Caso ocorra algum erro ao atualizar o usuário, captura e exibe a mensagem de erro
         console.error('Erro ao atualizar usuário:', error.message);
     }
 }
 
-// Chama a função principal e captura erros globais
+async function deleteUser(userService: UserService) {
+    const userId = prompt("Digite o ID do usuário a ser deletado: ");
+    try {
+        await userService.deleteUser(userId);
+        console.log("Usuário deletado com sucesso.");
+    } catch (error: any) {
+        console.error('Erro ao deletar usuário:', error.message);
+    }
+}
+
+async function viewAllUsers(userService: UserService) {
+    try {
+        const users = await userService.getAllUsers();
+        if (users.length === 0) {
+            console.log("Nenhum usuário encontrado.");
+        } else {
+            console.log("Usuários cadastrados:");
+            users.forEach(user => {
+                console.log(`ID: ${user.id}, Nome: ${user.name}, Email: ${user.email}`);
+            });
+        }
+    } catch (error: any) {
+        console.error('Erro ao recuperar usuários:', error.message);
+    }
+}
+
+async function viewUserById(userService: UserService) {
+    const userId = prompt("Digite o ID do usuário a ser visualizado: ");
+    try {
+        const user = await userService.getUserById(userId);
+        console.log("Detalhes do usuário:", user);
+    } catch (error: any) {
+        console.error('Erro ao recuperar o usuário:', error.message);
+    }
+}
+
 main().catch(err => {
-    // Caso algum erro inesperado aconteça, exibe no console
     console.error('Erro na execução do main:', err);
 });
